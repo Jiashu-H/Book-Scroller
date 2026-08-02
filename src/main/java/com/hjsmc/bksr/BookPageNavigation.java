@@ -1,5 +1,8 @@
 package com.hjsmc.bksr;
 
+import net.minecraft.client.gui.screens.inventory.BookEditScreen;
+import net.minecraft.client.gui.screens.inventory.BookViewScreen;
+
 import java.util.function.IntConsumer;
 
 final class BookPageNavigation {
@@ -25,4 +28,10 @@ final class BookPageNavigation {
         }
         return Math.max(0, Math.min(pageCount - 1, currentPage + pageDelta));
     }
+
+    static boolean supportsBookScrolling(Class<?> screenClass) {
+        return BookViewScreen.class.isAssignableFrom(screenClass)
+                || BookEditScreen.class.isAssignableFrom(screenClass);
+    }
+
 }

@@ -1,7 +1,6 @@
 package com.hjsmc.bksr;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,14 +21,15 @@ public final class BookScroller {
 
     @net.minecraftforge.eventbus.api.SubscribeEvent
     public static void onMouseScrolled(ScreenEvent.MouseScrolled.Pre event) {
-        if (!(event.getScreen() instanceof BookViewScreen bookScreen) || event.getScrollDelta() == 0.0D) {
+        Screen screen = event.getScreen();
+        if (!BookPageNavigation.supportsBookScrolling(screen.getClass()) || event.getScrollDelta() == 0.0D) {
             return;
         }
 
         BookPageNavigation.turnPages(event.getScrollDelta(), Screen.hasShiftDown(),
                 BookScrollerConfig.normalPages(), BookScrollerConfig.shiftPages(), direction -> {
                     int key = direction < 0 ? GLFW.GLFW_KEY_PAGE_UP : GLFW.GLFW_KEY_PAGE_DOWN;
-                    bookScreen.keyPressed(key, 0, 0);
+                    screen.keyPressed(key, 0, 0);
                 });
         event.setCanceled(true);
     }
